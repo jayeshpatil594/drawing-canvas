@@ -23,8 +23,8 @@ class DrawingView(context: Context, attrs: AttributeSet) : View(context, attrs) 
     /*arraylist to store the paths so if we release the touch
      the path stays on the screen, and we can draw more along with it.
     */
-    private val mPaths = ArrayList<CustomPath>()
-    private val mUndoPaths = ArrayList<CustomPath>()
+    private val dPaths = ArrayList<CustomPath>()
+    private val dUndoPaths = ArrayList<CustomPath>()
     //private val mRedoPaths = ArrayList<CustomPath>()
 
     init {
@@ -32,22 +32,22 @@ class DrawingView(context: Context, attrs: AttributeSet) : View(context, attrs) 
     }
 
     fun onClickUndo(){
-        if(mPaths.size > 0){
-            mUndoPaths.add(mPaths.removeAt(mPaths.size -1))
+        if(dPaths.size > 0){
+            dUndoPaths.add(dPaths.removeAt(dPaths.size -1))
             invalidate()
         }
     }
 
     fun onClickRedo(){
-        if(mUndoPaths.size > 0){
-            mPaths.add(mUndoPaths.removeAt(mUndoPaths.size -1))
+        if(dUndoPaths.size > 0){
+            dPaths.add(dUndoPaths.removeAt(dUndoPaths.size -1))
             invalidate()
         }
     }
 
     fun onReset(){
-        if(mPaths.size > 0){
-            mPaths.clear()
+        if(dPaths.size > 0){
+            dPaths.clear()
             invalidate()
         }
     }
@@ -75,7 +75,7 @@ class DrawingView(context: Context, attrs: AttributeSet) : View(context, attrs) 
         super.onDraw(canvas)
         canvas.drawBitmap(dCanvasBitmap!!, 0f, 0f, dCanvasPaint)
 
-        for(path in mPaths){
+        for(path in dPaths){
             dDrawPaint!!.strokeWidth = path.brushThickness
             dDrawPaint!!.color = path.color
             canvas.drawPath(path, dDrawPaint!!)
@@ -114,7 +114,7 @@ class DrawingView(context: Context, attrs: AttributeSet) : View(context, attrs) 
                 )
             }
             MotionEvent.ACTION_UP -> {
-                mPaths.add(dDrawPath!!)
+                dPaths.add(dDrawPath!!)
                 dDrawPath = CustomPath(color, dBrushSize)
             }
             else -> return false
